@@ -1,9 +1,10 @@
 import './App.css';
+import Layout from './pages/layout/index'
 
 function App() {
   return (
     <div className="App">
-        232
+        <Layout></Layout>
     </div>
   );
 }
