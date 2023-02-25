@@ -1,11 +1,12 @@
-import './App.css';
-import Layout from './pages/layout/index'
+
+import { BrowserRouter,  } from 'react-router-dom';
+import { Router } from './router/index'
 
 function App() {
   return (
-    <div className="App">
-        <Layout></Layout>
-    </div>
+    <BrowserRouter>
+        <Router />
+    </BrowserRouter>
   );
 }
 
