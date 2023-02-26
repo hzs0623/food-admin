@@ -22,3 +22,9 @@
     align-items: center;
     color: #fff;
   }
+
+  .layout-out {
+   position: absolute;
+   bottom: 20px;
+   left: 20px;
+  }

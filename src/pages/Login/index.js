@@ -8,7 +8,8 @@ const App = () => {
     // 登录成功
     const onFinish = async (values) => {
        const res = await login(values)
-       console.log(res)
+      localStorage.setItem('user_token', res.msg)
+      location.href = '/'
     };
 
     // 失败的回调

@@ -1,23 +1,24 @@
 
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { lazy, useEffect } from 'react';
+import { menuRouter } from './routers'
 
-export const routers = [
+const viewRouter = [
+    {
+        path: '/',
+        component: lazy(() => import('../pages/Layout/home')),
+    },
+]
+
+menuRouter.forEach(item => {
+    viewRouter.push(...item.children)
+})
+
+export const pageRouters = [
     {
         path: '/',
         component: lazy(() => import('../pages/Layout/index')),
-        children: [
-            {
-                path: '/',
-                component: () => '主页',
-            },
-            {
-                path: '/home',
-                component: () => {
-                    return (<div>home</div>)
-                },
-            },
-        ]
+        children: viewRouter
     },
     {
         path: '/login',
@@ -28,11 +29,10 @@ export const routers = [
         path: '*',
         component: lazy(() => import('../pages/NotFound')),
     }
-
 ]
 
 
-function searchroutedetail(path, routes = routers) {
+function searchroutedetail(path, routes) {
     let currentItem
     for (let item of routes) {
         if (item.path === path) {
@@ -53,7 +53,7 @@ export function Router() {
 
     useEffect(() => {
         const { pathname } = location;
-        const routedetail = searchroutedetail(pathname);
+        const routedetail = searchroutedetail(pathname, pageRouters);
 
         if (!routedetail || routedetail.notAuth) { // 没有找到路由
             return;
@@ -73,7 +73,7 @@ export function Router() {
     function getRouter(routers = []) {
         if (!routers || routers.length === 0) return
         return routers.map((item, index) => {
-            return (
+            return item.component && (
                 <Route
                     key={item.path + index}
                     path={item.path}
@@ -86,6 +86,6 @@ export function Router() {
     }
 
     return (<Routes>
-        {getRouter(routers)}
+        {getRouter(pageRouters)}
     </Routes>)
 }

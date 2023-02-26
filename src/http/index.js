@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance = axios.create({
     // baseURL: 'http://47.115.53.1:8090',
-    baseURL: '/api',
+    baseURL: '',
     timeout: 1000,
     headers: { 
         'Content-Type': 'application/json',
@@ -12,6 +12,7 @@ const instance = axios.create({
 
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
+    config.headers.Authorization = localStorage.getItem('user_token')
     return config;
 }, function (error) {
     return Promise.reject(error);
@@ -19,7 +20,13 @@ instance.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
-    return response;
+    const { data } = response
+
+    if (data.code != '200') {
+        return Promise.reject(data)
+    }
+
+    return data;
 }, function (error) {
     return Promise.reject(error);
 });
