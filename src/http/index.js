@@ -3,7 +3,7 @@ import axios from "axios";
 const instance = axios.create({
     // baseURL: 'http://47.115.53.1:8090',
     baseURL: '',
-    timeout: 1000,
+    timeout: 3000,
     headers: { 
         'Content-Type': 'application/json',
         vary: 'Origin, Access-Control-Request-Method, Access-Control-Request-Headers'
@@ -29,7 +29,6 @@ instance.interceptors.response.use(function (response) {
 }, function (error) {
     return Promise.reject(error);
 });
-
 
 window.$http = instance
 

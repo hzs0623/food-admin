@@ -1,6 +1,7 @@
 import { Card } from 'antd';
 import Table from './table'
 import DForm from './From'
+import Mode from './Mode'
 import { useState } from 'react'
 
 import { getCateList } from '../../http/cate'
@@ -11,8 +12,11 @@ const App = () => {
     const [pageNum, setpageNum] = useState(10)
     const [loading, setLoading] = useState(false)
     const [list, setList] = useState([])
+    const [showModel, setModel] = useState(false)
 
-    const getList = async ({ parentId = '', storeId = '' }) => {
+    const [title, setTitle] = useState('')
+
+    const getList = async ({ parentId = '', storeId = '' } = {}) => {
         setpageSize(1)
         setpageNum(10)
         setLoading(true)
@@ -32,10 +36,20 @@ const App = () => {
         }
     }
 
+    const onAdd = () => {
+        setTitle('新增分类')
+        setModel(true)
+    }
+
+    const changeMode = (value) => {
+        setModel(false)
+        getList()
+    }
+
     return (<>
         <Card
         >
-            <DForm submit={ getList } />
+            <DForm submit={getList} onAdd= {onAdd  } />
         </Card>
 
         <Card
@@ -43,8 +57,10 @@ const App = () => {
                 marginTop: 20,
             }}
         >
-            <Table  list={ list } loading={ loading } />
+            <Table list={list} loading={loading} pagination={ { total, pageSize: pageNum } } />
         </Card>
+
+        <Mode title={title} show= { showModel } change={ changeMode } list={list}></Mode>
     </>)
 };
 export default App;
