@@ -29,7 +29,7 @@ const menuRouter = [
         children: [
             {
                 name: '分类查询',
-                path: 'cate/list',
+                path: '/cate/list',
                 component: CateList,
             }
         ]
@@ -41,7 +41,7 @@ const menuRouter = [
         children: [
             {
                 name: '标签查询',
-                path: 'label/list',
+                path: '/label/list',
                 component: () => '标签查询',
             }
         ]

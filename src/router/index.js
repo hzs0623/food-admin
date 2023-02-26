@@ -54,7 +54,7 @@ export function Router() {
     useEffect(() => {
         const { pathname } = location;
         const routedetail = searchroutedetail(pathname, pageRouters);
-
+  
         if (!routedetail || routedetail.notAuth) { // 没有找到路由
             return;
         }
