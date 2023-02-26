@@ -6,7 +6,7 @@ import { menuRouter } from './routers'
 const viewRouter = [
     {
         path: '/',
-        component: lazy(() => import('../pages/Layout/home')),
+        component: lazy(() => import('../pages/Layout/home/index')),
     },
 ]
 

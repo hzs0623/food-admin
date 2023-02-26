@@ -3,7 +3,11 @@ import {
     MailOutlined,
     SettingOutlined
 } from '@ant-design/icons';
-import { lazy } from 'react';
+
+import UserList from '../view/user/index'
+import CateList from '../view/cate'
+
+import widthUseNavigate from '../utils/widthUseNavigate'
 
 const menuRouter = [
     {
@@ -14,7 +18,7 @@ const menuRouter = [
             {
                 name: '用户列表',
                 path: '/user/list',
-                component: () => '用户列表',
+                component: UserList,
             }
         ],
     },
@@ -26,7 +30,7 @@ const menuRouter = [
             {
                 name: '分类查询',
                 path: 'cate/list',
-                component: lazy(() => import('../view/cate')),
+                component: CateList,
             }
         ]
     },
@@ -43,6 +47,17 @@ const menuRouter = [
         ]
     },
 ]
+
+function menuUseNavigate(list = []) {
+    list.forEach(item => {
+        if (item.component) {
+            item.component = widthUseNavigate(item.component)
+        }
+        menuUseNavigate(item.children)
+    })
+}
+
+menuUseNavigate(menuRouter) // 每个组件加入路由跳转方法
 
 
 function getItem(label, key, icon, children, type) {

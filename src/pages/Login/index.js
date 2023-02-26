@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input, message  } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import './index.css'
 import { login } from 'http/user'
 
@@ -7,9 +7,10 @@ const App = () => {
 
     // 登录成功
     const onFinish = async (values) => {
-       const res = await login(values)
-      localStorage.setItem('user_token', res.msg)
-      location.href = '/'
+        const res = await login(values)
+        console.log(res)
+        localStorage.setItem('user_token', res.msg)
+        location.href = '/'
     };
 
     // 失败的回调
@@ -19,7 +20,7 @@ const App = () => {
 
     return (
         <div className='login-page'>
-             {contextHolder}
+            {contextHolder}
             <Form
                 name="basic"
                 labelCol={{

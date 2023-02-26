@@ -25,7 +25,9 @@ const App = () => {
     return (
         <Layout className='layout-page'>
             <Sider trigger={null} collapsible collapsed={collapsed}>
-                <div className="logo">food admin</div>
+                <div className="logo">
+                    <img src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" alt=""/>
+                    food admin</div>
                 <Menu />
                 <div className='layout-out'>
                     <Button type="link" onClick={outLogin}>注销</Button>
@@ -48,14 +50,12 @@ const App = () => {
                 <Content
                     style={{
                         margin: '24px 16px',
-                        padding: 24,
-                        background: colorBgContainer,
                     }}
                 >
-
                     <Outlet />
-
                 </Content>
+
+
             </Layout>
         </Layout>
     );

@@ -21,7 +21,6 @@ instance.interceptors.request.use(function (config) {
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
     const { data } = response
-
     if (data.code != '200') {
         return Promise.reject(data)
     }
