@@ -10,13 +10,15 @@ import {
     Switch,
 } from 'antd';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { upload } from 'http/upload'
-import { addCate } from 'http/cate'
+import { addCate, updateCate } from 'http/cate'
 
 
 const DForm = (props) => {
+    const formRef = useRef(null);
     const [file, setFile] = useState([])
+    const [selectList, setSelectList] = useState([])
 
     //文件发送请求事件
     const getFilesHandle = () => {
@@ -26,16 +28,30 @@ const DForm = (props) => {
         return upload(formData)
     }
 
+    const onReset = () => {
+        setFile([])
+        formRef.current?.resetFields();
+    };
+
+
     const onFinish = async (values) => {
         const updateRes = await getFilesHandle()
         const categoryImg = updateRes?.data || ''
 
-        const res = await addCate({
-            ...values,
-            categoryImg
-        })
-        setFile([])
-        props.handleOk(res)
+        if (props.edit) {
+            await updateCate({
+                ...props.updateData,
+                ...values,
+                status: Number(values.status)
+            })
+        } else {
+            await addCate({
+                ...values,
+                categoryImg
+            })
+        }
+        props.handleOk()
+        onReset()
     };
 
     const uploadProps = {
@@ -51,9 +67,36 @@ const DForm = (props) => {
         showUploadList: true
     };
 
+    const changeRadio = ({ target: { value } }) => {
+        formRef.current?.setFieldsValue({ parentId: '' }) // 请空父级id
+        const arr = []
+        props.list.forEach(item => {
+            if (item.type == value) {
+                arr.push({
+                    value: item.id,
+                    label: item.categoryName
+                })
+            }
+        })
+
+        setSelectList(arr)
+    }
+
+    useEffect(() => {
+        if (!props.edit) {
+            onReset()
+            return
+        }
+        formRef.current?.setFieldsValue({
+            ...props.updateData,
+            type: props.updateData?.type + ''
+        })
+    }, [props.updateData])
+
     return (
         <>
             <Form
+                ref={formRef}
                 labelCol={{
                     span: 4,
                 }}
@@ -70,7 +113,7 @@ const DForm = (props) => {
                         message: 'Please input your type!',
                     },
                 ]}>
-                    <Radio.Group>
+                    <Radio.Group onChange={changeRadio}>
                         <Radio value="2"> 店铺 </Radio>
                         <Radio value="1"> 平台 </Radio>
                     </Radio.Group>
@@ -89,19 +132,12 @@ const DForm = (props) => {
                     <Input />
                 </Form.Item>
 
-                <Form.Item label="父级分类" name="parentId">
+                <Form.Item label="父级ID" name="parentId">
                     <Select
-                        options={
-                            props.list.map(item => {
-                                return {
-                                    value: item.id, 
-                                    label: item.categoryName
-                                }
-                            })
-                        }
+                        options={selectList}
                         allowClear={true}
                     >
-                        
+
                     </Select>
                 </Form.Item>
 
@@ -115,7 +151,12 @@ const DForm = (props) => {
                 </Form.Item> : ''}
 
 
-                <Form.Item label="Upload">
+                <Form.Item label="Upload" rules={[
+                    {
+                        required: true,
+                        message: 'Please Upload!',
+                    },
+                ]}>
                     <Upload {...uploadProps}>
                         <Button icon={<PlusOutlined />}>Click to Upload</Button>
                     </Upload>
@@ -132,11 +173,11 @@ const DForm = (props) => {
 };
 
 const App = (props) => {
-    const handleOk = (res) => {
-        props.change(res)
+    const handleOk = () => {
+        props.change({ fetch: true })
     };
     const handleCancel = () => {
-        props.change(false)
+        props.change()
     };
     return (
         <>
@@ -148,7 +189,7 @@ const App = (props) => {
                 footer={null}
                 width={600}
             >
-                <DForm list={ props.list } edit={ props.edit } handleOk={ handleOk }></DForm>
+                <DForm list={props.list} edit={props.type === 'update'} updateData={props.updateData} handleOk={handleOk}></DForm>
             </Modal>
         </>
     );

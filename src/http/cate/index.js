@@ -20,3 +20,23 @@ export const addCate = ({ categoryName, wcategoryName,  parentId, storeId, type,
         }
     })
 }
+
+export const removeCate = (ids=[]) => {
+    return $http({
+        url: '/category/delete',
+        method: 'get',
+        params: {
+            ids
+        }
+    })
+}
+
+export const updateCate = ({ categoryImg, categoryName, id,  parentId,  status, wcategoryName }) => {
+    return $http({
+        url: '/category/update',
+        method: 'post',
+        data: {
+            categoryImg, categoryName, id,  parentId,  status, wcategoryName
+        }
+    })
+}
