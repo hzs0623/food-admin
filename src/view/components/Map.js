@@ -1,7 +1,6 @@
 import './index.css'
 import { message, Modal, Form, Input, Button } from 'antd'
-
-
+import { getBit } from '../../utils/index'
 
 export default function App(props = {}) {
     const [messageApi, contextHolder] = message.useMessage();
@@ -14,7 +13,10 @@ export default function App(props = {}) {
             // map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
             map.centerAndZoom(mapData.city, 12); // 设置中心点坐标和地图级别 12放大级别
             map.addEventListener('click', function showInfo(e) {
-                props.change(e.latlng)
+                const { lng, lat  } = e.latlng
+                const longitude = getBit(lng, 4) // 截取小数点后4位 后端只支持4位
+                const latitude = getBit(lat, 4) // 截取小数点后4位 后端只支持4位
+                props.change({ latitude, longitude })
                 messageApi.success('经纬度：' + e.latlng.lng + ',' + e.latlng.lat);
             });
         }

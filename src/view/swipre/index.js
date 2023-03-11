@@ -27,9 +27,10 @@ const App = () => {
         setshowAdd(true)
     }   
 
-    const addChange = (item) => {
+    const addChange = async (item) => {
         setshowAdd(false)
-        console.log(item)
+        await addSwipreApi(item)
+        getSwipreListData()
     }
 
     const onDelete = async ({ id }) => {
