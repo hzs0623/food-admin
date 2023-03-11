@@ -68,11 +68,11 @@ const App = () => {
                     <Input style={{ width: '100px' }}  />
                 </Form.Item>
                 
-                <Form.Item name="latitude" label="经度" rules={[{ required: true }]}>
+                <Form.Item name="longitude" label="经度" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
 
-                <Form.Item name="longitude" label="纬度" rules={[{ required: true }]}>
+                <Form.Item name="latitude" label="纬度" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
 
