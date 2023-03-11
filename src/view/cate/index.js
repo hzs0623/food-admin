@@ -8,7 +8,6 @@ import { getCateList, removeCate } from '../../http/cate'
 
 const App = () => {
     const [query, setQuery] = useState({ pageNum: 10, pageSize: 1, storeId: '', parentId: ''  })
-    const [total, setTotal] = useState(0)
     const [loading, setLoading] = useState(false)
     const [list, setList] = useState([])
     const [showModel, setModel] = useState(false)
@@ -20,9 +19,7 @@ const App = () => {
         setLoading(true)
         try {
             const res = await getCateList(query)
-            const { records, total } = res.data || {}
-            setList(records)
-            setTotal(total)
+            setList(res.data || [])
         } finally {
             setLoading(false)
         }

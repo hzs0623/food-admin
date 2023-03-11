@@ -21,6 +21,15 @@ instance.interceptors.request.use(function (config) {
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
     const { data } = response
+
+    if (data.code == 2) {
+        // 登录过期
+        localStorage.clear("user_token");
+        location.href = '/'
+        return
+    }
+
+    console.log('当前返回数据', data, '=======================')
     if (data.code != '200') {
         return Promise.reject(data)
     }

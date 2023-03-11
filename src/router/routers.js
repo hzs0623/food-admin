@@ -6,6 +6,7 @@ import {
 
 import UserList from '../view/user/index'
 import CateList from '../view/cate'
+import Swipre from '../view/swipre'
 
 import widthUseNavigate from '../utils/widthUseNavigate'
 
@@ -31,6 +32,18 @@ const menuRouter = [
                 name: '分类查询',
                 path: '/cate/list',
                 component: CateList,
+            }
+        ]
+    },
+    {
+        name: '轮播图管理',
+        path: '/swipre',
+        icon: <SettingOutlined />,
+        children: [
+            {
+                name: '轮播图管理',
+                path: '/swipre/list',
+                component: Swipre,
             }
         ]
     },

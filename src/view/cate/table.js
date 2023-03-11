@@ -28,9 +28,9 @@ const App = (props) => {
             title: '类型',
             key: 'type',
             dataIndex: 'type',
-            render: (_, { type }) => {
+            render: (_, { type, parentId, id }) => {
                 const color = type == 1 ? 'geekblue' : 'green';
-                return (<Tag color={color} key={type}>
+                return (<Tag color={color} key={parentId + id}>
                     {type == 1 ? '平台' : '店铺'}
                 </Tag>)
             },
@@ -39,7 +39,7 @@ const App = (props) => {
             title: '操作',
             key: 'action',
             render: (_, record) => (
-                <Space size="middle">
+                <Space key={record.parentId + record.id} size="middle">
                     <a onClick={ () => props.onUpdate(record) }>更新</a>
 
                     <Popconfirm
@@ -58,7 +58,12 @@ const App = (props) => {
         },
     ];
 
-    return (<Table columns={columns} dataSource={props.list} loading={props.loading} />)
+    return (<Table 
+        columns={columns} 
+        dataSource={props.list} 
+        loading={props.loading} 
+        rowKey={ r => r.id } 
+        />)
 };
 
 export default App;
