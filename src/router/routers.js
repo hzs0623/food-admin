@@ -4,7 +4,7 @@ import {
     SettingOutlined
 } from '@ant-design/icons';
 
-import UserList from '../view/user/index'
+import UserList from '../view/store/index'
 import CateList from '../view/cate'
 import Swipre from '../view/swipre'
 
@@ -12,13 +12,13 @@ import widthUseNavigate from '../utils/widthUseNavigate'
 
 const menuRouter = [
     {
-        name: '用户管理',
-        path: '/user',
+        name: '店铺管理',
+        path: '/store',
         icon: <AppstoreOutlined />,
         children: [
             {
-                name: '用户列表',
-                path: '/user/list',
+                name: '店铺列表管理',
+                path: '/store/list',
                 component: UserList,
             }
         ],
@@ -58,6 +58,18 @@ const menuRouter = [
                 component: () => '标签查询',
             }
         ]
+    },
+    {
+        name: '用户管理',
+        path: '/user',
+        icon: <AppstoreOutlined />,
+        children: [
+            {
+                name: '用户列表',
+                path: '/user/list',
+                component: UserList,
+            }
+        ],
     },
 ]
 
