@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { upload } from 'http/upload'
 import { getAreaCode } from 'http/area'
 
-import Map from '../components/Map'
+import Map from '../components/Map/index'
 
 
 const mockForm = {

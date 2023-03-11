@@ -1,6 +1,6 @@
 import './index.css'
 import { message, Modal, Form, Input, Button } from 'antd'
-import { getBit } from '../../utils/index'
+import { getBit } from '../../../utils/index'
 
 export default function App(props = {}) {
     const [messageApi, contextHolder] = message.useMessage();

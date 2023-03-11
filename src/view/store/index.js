@@ -1,6 +1,6 @@
 import { Card, Button, Input, Table, Popconfirm, Space, Tag, Form, Select } from 'antd';
 import { useState, useRef,  useEffect } from 'react'
-import Map from '../components/Map'
+import Map from '../components/Map/index'
 import AddStore from './AddModal'
 import { addStoreAPi } from 'http/store/index'
 import { getCateList } from 'http/cate'
