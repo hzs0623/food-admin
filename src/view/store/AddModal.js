@@ -3,12 +3,14 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useState, useRef, useEffect } from 'react'
 import { upload } from 'http/upload'
 import { getAreaCode } from 'http/area'
+import { getCateList } from 'http/cate'
 
 import Map from '../components/Map/index'
 
 export default function App(props = {}) {
     const formRef = useRef(null);
     const [showMap, setShowMap] = useState(false)
+    const [cateList, setcateList] = useState([]);
     const [file, setFile] = useState([])
     const [areaList, setAreaList] = useState([]) // 省列表
     const [cityList, setCityList] = useState([]) // 城市列表
@@ -27,6 +29,11 @@ export default function App(props = {}) {
     useEffect(() => {
         getAreaCode().then(list => { // 初次渲染添获取所有城市
             setAreaList(list)
+        })
+        getCateList({ pageNum: 1, pageSize: 10, storeId: '', parentId: '' }).then(d => {
+            setcateList(d?.data?.map(item => {
+                return { value: item.id, label: item.categoryName }
+            }))
         })
     },[])
 
@@ -96,7 +103,10 @@ export default function App(props = {}) {
                 </Form.Item>
 
                 <Form.Item name="categoryId" label="分类id" rules={[{ required: true }]}>
-                    <Input placeholder="请输入分类id" />
+                    <Select
+                        style={{ width: 120 }}
+                        options={cateList}
+                    />
                 </Form.Item>
 
                 <Form.Item name="province" label="省">

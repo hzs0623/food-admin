@@ -33,6 +33,9 @@ const App = () => {
             title: '店铺头像',
             dataIndex: 'storeUrl',
             key: 'storeUrl',
+            render(_, { storeUrl }) {
+                return storeUrl && <a href={storeUrl} target="_blank">点击查看</a>
+            }
         },
         {
             title: '店铺地址',
@@ -46,7 +49,7 @@ const App = () => {
             render(_, { categoryId }) {
                 const currentList = cateList.filter(item => item.value == categoryId)
                 return (<>
-                    { currentList[0].label }
+                    {currentList[0].label}
                 </>)
             }
         },
@@ -117,10 +120,10 @@ const App = () => {
             key: 'action',
             render: (_, record) => (
                 <Space key={record.parentId + record.id} size="middle">
-                    <a onClick={ () => {
+                    <a onClick={() => {
                         setUpdateData(record)
                         setIsAddMoal(true)
-                    } }>修改</a>
+                    }}>修改</a>
                 </Space>
             ),
         },
@@ -181,7 +184,10 @@ const App = () => {
     return (<>
         {contextHolder}
         <Card>
-            <Form ref={formRef} layout="inline" onFinish={submitForm} >
+            <Form ref={formRef} layout="inline" onFinish={submitForm} initialValues={{
+                longitude: '113.9294',
+                latitude: '22.5335',
+            }} >
                 <Form.Item name="categoryId" label="分类ID" rules={[{ required: true }]}>
                     <Select
                         style={{ width: 120 }}
@@ -194,7 +200,7 @@ const App = () => {
                 </Form.Item>
 
                 <Form.Item name="longitude" label="经度" rules={[{ required: true }]}>
-                    <Input />
+                    <Input  />
                 </Form.Item>
 
                 <Form.Item name="latitude" label="纬度" rules={[{ required: true }]}>
@@ -244,7 +250,7 @@ const App = () => {
 
         <Map open={isModalOpen} onCancel={() => { setIsModalOpen(false) }} change={mapChange} ></Map>
 
-        <AddStore open={isAddMoal} onCancel={() => { setIsAddMoal(false) }} change={storeChange} updateData={ updateData } ></AddStore>
+        <AddStore open={isAddMoal} onCancel={() => { setIsAddMoal(false) }} change={storeChange} updateData={updateData} ></AddStore>
     </>)
 }
 
