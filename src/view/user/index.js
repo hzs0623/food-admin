@@ -1,6 +1,13 @@
 import Dynamic from '../components/Dynamic/index'
+import store from '../../store/index'
 
 const App = () => {
+
+
+  setTimeout(() => {
+    console.log(store.getState())
+  })
+
   const formConfig = [
     {
       name: 'cateId',
