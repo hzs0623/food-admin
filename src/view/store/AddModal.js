@@ -6,24 +6,6 @@ import { getAreaCode } from 'http/area'
 
 import Map from '../components/Map/index'
 
-
-const mockForm = {
-    "storeName": "test",
-    "introduction": "测试",
-    "categoryId": "2",
-    "province": "440000",
-    "city": "440300",
-    "latitude": 22.5335,
-    "longitude": 113.9294,
-    "address": "南山区西丽街道",
-    "businessLicense": "10012",
-    "agentId": "1",
-    "linkman": "daes",
-    "phone": "17723595689",
-    "telephone": "17723595689",
-    "storeUrl": "111_20233711233738.png"
-}
-
 export default function App(props = {}) {
     const formRef = useRef(null);
     const [showMap, setShowMap] = useState(false)
@@ -31,6 +13,8 @@ export default function App(props = {}) {
     const [areaList, setAreaList] = useState([]) // 省列表
     const [cityList, setCityList] = useState([]) // 城市列表
     const [countyList, setCountyList] = useState([]) // 城市列表
+
+    const title = props.updateData ? '修改店铺' : '新增店铺'
 
     //文件发送请求事件
     const getFilesHandle = () => {
@@ -41,20 +25,28 @@ export default function App(props = {}) {
     }
 
     useEffect(() => {
-        getAreaCode().then(list => {
+        getAreaCode().then(list => { // 初次渲染添获取所有城市
             setAreaList(list)
-            setTimeout(() => {
-                formRef.current?.setFieldsValue(mockForm) // mock数据
-            }, 2000)
         })
     },[])
+
+    useEffect(() => {
+        if (props.updateData) {
+            formRef.current?.setFieldsValue(props.updateData)
+        } else {
+            formRef.current?.resetFields();
+        }
+    }, [props.updateData])
 
     const submitForm = async (data) => {
         const updateRes = await getFilesHandle()
         const storeUrl = updateRes?.data || ''
         props.change({
-            ...data,
-            storeUrl
+            item: {
+                ...data,
+                storeUrl
+            },
+            type: props.updateData ? 'update' : 'add'
         })
     }
 
@@ -93,7 +85,7 @@ export default function App(props = {}) {
     }
 
     return <>
-        <Modal width={1000} title="新增店铺" onCancel={props.onCancel} footer={null} open={props.open}>
+        <Modal width={1000} title={title} onCancel={props.onCancel} footer={null} open={props.open}>
             <Form ref={formRef} onFinish={submitForm}>
                 <Form.Item name="storeName" label="店铺名称" rules={[{ required: true }]}>
                     <Input placeholder="请输入店铺名称" />
